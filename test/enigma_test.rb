@@ -57,4 +57,12 @@ class EnigmaTest < Minitest::Test
     # Enigma#decrypt(ciphertext, key, date)
     # The decrypt method takes a ciphertext String and the Key used for encryption as arguments. The decrypt method can optionally take a date as the third argument. If no date is given, this method should use today’s date for decryption.
   end
+
+  def test_decrypt_uses_todays_date_if_no_date_argument
+    skip
+    encrypted = @enigma.encrypt("hello world", "02715")
+    decrypted = @enigma.decrypt(encrypted[:encryption], "02715")[:decryption]
+
+    assert_equal "hello world", decrypted
+  end
 end
