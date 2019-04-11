@@ -27,6 +27,12 @@ class EnigmaTest < Minitest::Test
     assert_equal "keder ohulw", encrypted
   end
 
+  def test_encrypt_doesnt_change_special_characters
+    skip
+    encrypted = @enigma.encrypt("hello world!", "040895", "02715")[:encryption]
+    assert_equal "keder ohulw!", encrypted
+  end
+
   def test_decrypt_returns_hash
     skip
     expected = {
