@@ -33,6 +33,12 @@ class EnigmaTest < Minitest::Test
     assert_equal "keder ohulw!", encrypted
   end
 
+  def test_encrypt_with_no_date_uses_todays_date
+    skip
+    # expected = ? # TO DO
+    # assert_equal expected, @enigma.encrypt("hello world", "02715")
+  end
+
   def test_decrypt_returns_hash
     skip
     expected = {
