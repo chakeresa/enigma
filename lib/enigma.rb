@@ -7,4 +7,13 @@ class Enigma
 #     date: date
 #   }
 # end
+
+# def decrypt(ciphertext, key, date)
+#   # TO DO
+#   {
+#     decryption: message, # TO DO
+#     key: key,
+#     date: date
+#   }
+# end
 end
