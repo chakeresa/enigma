@@ -9,7 +9,7 @@ class EnigmaTest < Minitest::Test
     assert_instance_of Enigma, @enigma
   end
 
-  def test_encrypt_lowercase_and_spaces_only_produces_hash
+  def test_encrypt_lowercase_and_spaces_only_returns_hash
     skip
     expected = {
       encryption: "keder ohulw",
@@ -21,7 +21,13 @@ class EnigmaTest < Minitest::Test
     # The encrypt method takes a message String as an argument. It can optionally take a Key and Date as arguments to use for encryption. If the key is not included, generate a random key. If the date is not included, use today’s date.
   end
 
-  def test_decrypt
+  def test_encrypt_makes_uppercase_become_lowercase
+    skip
+    encrypted = @enigma.encrypt("HELLO world", "040895", "02715")[:encryption]
+    assert_equal "keder ohulw", encrypted
+  end
+
+  def test_decrypt_returns_hash
     skip
     expected = {
       decryption: "hello world",
