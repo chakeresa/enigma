@@ -1,4 +1,6 @@
-class DateShiftGenerator
+require_relative 'shift_generator'
+
+class DateShiftGenerator < ShiftGenerator
   # TO DO: consider making date_key an argument of date_shift_array *class* method
   # OR: run date_shift_array in init so its result can be stored
 

@@ -1,4 +1,6 @@
-class KeyShiftGenerator
+require_relative 'shift_generator'
+
+class KeyShiftGenerator < ShiftGenerator
   # TO DO: consider making key an argument of key_shift_array *class* method
   # OR: run key_shift_array in init so its result can be stored
 
