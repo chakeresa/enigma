@@ -5,7 +5,8 @@ require_relative 'date_shift_generator'
 
 class Enigma
   def random_key
-    random_number_string = rand(99999).to_s
+    max_number = "9" * (ShiftGenerator::SHIFT_COUNT + 1)
+    random_number_string = rand(max_number.to_i).to_s
     ('%5s' % random_number_string).gsub(" ", "0")
   end
 
