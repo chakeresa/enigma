@@ -5,6 +5,7 @@ class KeyShiftGenerator < ShiftGenerator
 
   def initialize(key)
     @key = ('%5s' % key.to_s).gsub(" ", "0")
+    # TO DO: ^ figure out how to change 5 to SHIFT_COUNT + 1
   end
 
   def shift_array
