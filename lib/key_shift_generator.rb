@@ -15,4 +15,9 @@ class KeyShiftGenerator
     end
     key_shifts
   end
+
+  # TO DO: consider creating a ShiftGenerator superclass that will do this for both KeyShiftGenerator and DateShiftGenerator
+  def neg_key_shift_array
+    key_shift_array.map {|shift| -1 * shift}
+  end
 end

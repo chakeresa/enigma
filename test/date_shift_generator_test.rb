@@ -16,4 +16,8 @@ class DateShiftGeneratorTest < Minitest::Test
   def test_date_shift_array_returns_array_of_abcd_offsets
     assert_equal [3, 5, 2, 4], @date_shift_gen1.date_shift_array
   end
+
+  def test_neg_date_shift_array_returns_negatives_of_key_shift_array
+    assert_equal [-3, -5, -2, -4], @date_shift_gen1.neg_date_shift_array
+  end
 end

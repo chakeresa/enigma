@@ -3,6 +3,10 @@ require './test/test_helper'
 class EnigmaTest < Minitest::Test
   def setup
     @enigma = Enigma.new
+    dd = ('%2s' % Date.today.day.to_s).gsub(" ", "0")
+    mm = ('%2s' % Date.today.month.to_s).gsub(" ", "0")
+    yy = ('%2s' % Date.today.year.to_s[-2..-1]).gsub(" ", "0")
+    @expected_date = dd + mm + yy
   end
 
   def test_it_exists
@@ -55,25 +59,22 @@ class EnigmaTest < Minitest::Test
   end
 
   def test_encrypt_with_no_date_uses_todays_date
-    dd = ('%2s' % Date.today.day.to_s).gsub(" ", "0")
-    mm = ('%2s' % Date.today.month.to_s).gsub(" ", "0")
-    yy = ('%2s' % Date.today.year.to_s[-2..-1]).gsub(" ", "0")
-    expected_date = dd + mm + yy
+    short_encrypt_return = @enigma.encrypt("hello world", "02715")
+    long_encrypt_return = @enigma.encrypt("hello world", "02715", @expected_date)
 
-    encrypt_return = @enigma.encrypt("hello world", "02715")
-
-    assert_equal expected_date, encrypt_return[:date]
-    assert_equal @enigma.encrypt("hello world", "02715", expected_date), encrypt_return
+    assert_equal @expected_date, short_encrypt_return[:date]
+    assert_equal long_encrypt_return, short_encrypt_return
   end
 
   def test_encrypt_with_no_optional_args_returns_hash
-    skip
-    # expected = ? # TO DO
-    # assert_equal expected, @enigma.encrypt("hello world")
+    short_encrypt_return = @enigma.encrypt("hello world")
+    random_key = short_encrypt_return[:key]
+    long_encrypt_return = @enigma.encrypt("hello world", random_key, @expected_date)
+
+    assert_equal long_encrypt_return, short_encrypt_return
   end
 
   def test_decrypt_returns_hash
-    skip
     expected = {
       decryption: "hello world",
       key: "02715",
@@ -81,12 +82,9 @@ class EnigmaTest < Minitest::Test
     }
 
     assert_equal expected, @enigma.decrypt("keder ohulw", "02715", "040895")
-    # Enigma#decrypt(ciphertext, key, date)
-    # The decrypt method takes a ciphertext String and the Key used for encryption as arguments. The decrypt method can optionally take a date as the third argument. If no date is given, this method should use today’s date for decryption.
   end
 
   def test_decrypt_uses_todays_date_if_no_date_argument
-    skip
     encrypted = @enigma.encrypt("hello world", "02715")
     decrypted = @enigma.decrypt(encrypted[:encryption], "02715")[:decryption]
 
