@@ -32,7 +32,7 @@ class ShifterTest < Minitest::Test
     assert_equal "w", Shifter.shift_letter("Z", -3)
   end
 
-  def test_shift_letter_returns_new_letter_given_orig_uppercase_letter_and_shift
+  def test_shift_letter_doesnt_affect_special_characters
     assert_equal "&", Shifter.shift_letter("&", 2)
   end
 end
