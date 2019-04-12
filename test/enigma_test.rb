@@ -67,9 +67,11 @@ class EnigmaTest < Minitest::Test
   end
 
   def test_encrypt_with_no_optional_args_returns_hash
-    skip
-    # expected = ? # TO DO
-    # assert_equal expected, @enigma.encrypt("hello world")
+    short_encrypt_return = @enigma.encrypt("hello world")
+    random_key = short_encrypt_return[:key]
+    long_encrypt_return = @enigma.encrypt("hello world", random_key, @expected_date)
+
+    assert_equal long_encrypt_return, short_encrypt_return
   end
 
   def test_decrypt_returns_hash
