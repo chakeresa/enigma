@@ -9,6 +9,20 @@ class EnigmaTest < Minitest::Test
     assert_instance_of Enigma, @enigma
   end
 
+  def test_generate_random_key_returns_a_5_digit_string_with_leading_zeroes
+    lots_of_random_keys = []
+    10000.times {lots_of_random_keys << @enigma.generate_random_key}
+
+    all_five_digits = lots_of_random_keys.all? {|key| key.length == 5}
+    small_numbers_start_w_zero = lots_of_random_keys.all? do |key|
+      key.to_i < 10000 ? key[0] == "0" : true
+    end
+
+    assert_equal true, all_five_digits
+    assert_equal true, small_numbers_start_w_zero
+    assert_instance_of String, lots_of_random_keys[0]
+  end
+
   def test_encrypt_lowercase_and_spaces_only_returns_hash
     skip
     expected = {
