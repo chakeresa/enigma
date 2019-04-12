@@ -60,10 +60,11 @@ class EnigmaTest < Minitest::Test
     yy = ('%2s' % Date.today.year.to_s[-2..-1]).gsub(" ", "0")
     expected_date = dd + mm + yy
 
-    encrypt_return = @enigma.encrypt("hello world", "02715")
+    short_encrypt_return = @enigma.encrypt("hello world", "02715")
+    long_encrypt_return = @enigma.encrypt("hello world", "02715", expected_date)
 
-    assert_equal expected_date, encrypt_return[:date]
-    assert_equal @enigma.encrypt("hello world", "02715", expected_date), encrypt_return
+    assert_equal expected_date, short_encrypt_return[:date]
+    assert_equal long_encrypt_return, short_encrypt_return
   end
 
   def test_encrypt_with_no_optional_args_returns_hash
