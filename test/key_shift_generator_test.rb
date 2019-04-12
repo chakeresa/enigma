@@ -9,9 +9,12 @@ class KeyShiftGeneratorTest < Minitest::Test
     assert_instance_of KeyShiftGenerator, @key_shift_gen1
   end
 
-  def test_it_inits_with_key_length_and_a_key
-    assert_equal 5, @key_shift_gen1.key_length
+  def test_it_inits_with_a_key
     assert_equal "58467", @key_shift_gen1.key
+  end
+
+  def test_it_has_a_key_length_constant
+    assert_equal 5, KeyShiftGenerator::KEY_LENGTH
   end
 
   def test_init_adds_padding_to_key_input

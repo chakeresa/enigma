@@ -1,11 +1,7 @@
 require_relative 'shift_generator'
 
 class DateShiftGenerator < ShiftGenerator
-  attr_reader :key
-
-  def initialize(key)
-    @key = key
-  end
+  KEY_LENGTH = 6
 
   def shift_array
     key_squared = @key.to_i ** 2
