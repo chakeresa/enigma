@@ -3,6 +3,10 @@ require './test/test_helper'
 class EnigmaTest < Minitest::Test
   def setup
     @enigma = Enigma.new
+    dd = ('%2s' % Date.today.day.to_s).gsub(" ", "0")
+    mm = ('%2s' % Date.today.month.to_s).gsub(" ", "0")
+    yy = ('%2s' % Date.today.year.to_s[-2..-1]).gsub(" ", "0")
+    @expected_date = dd + mm + yy
   end
 
   def test_it_exists
@@ -55,15 +59,10 @@ class EnigmaTest < Minitest::Test
   end
 
   def test_encrypt_with_no_date_uses_todays_date
-    dd = ('%2s' % Date.today.day.to_s).gsub(" ", "0")
-    mm = ('%2s' % Date.today.month.to_s).gsub(" ", "0")
-    yy = ('%2s' % Date.today.year.to_s[-2..-1]).gsub(" ", "0")
-    expected_date = dd + mm + yy
-
     short_encrypt_return = @enigma.encrypt("hello world", "02715")
-    long_encrypt_return = @enigma.encrypt("hello world", "02715", expected_date)
+    long_encrypt_return = @enigma.encrypt("hello world", "02715", @expected_date)
 
-    assert_equal expected_date, short_encrypt_return[:date]
+    assert_equal @expected_date, short_encrypt_return[:date]
     assert_equal long_encrypt_return, short_encrypt_return
   end
 
