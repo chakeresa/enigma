@@ -13,29 +13,31 @@ class Enigma
     Date.today.strftime("%d%m%y")
   end
 
-  def generate_ciphertext(message, key_shift_ary, date_shift_ary)
-    ciphertext = ""
+  def translate(message, key_shift_ary, date_shift_ary)
+    translation = ""
     message.each_char.with_index do |char, index_of_char|
       abcd_index = index_of_char % 4
       shifted = Shifter.shift_letter(char, key_shift_ary[abcd_index])
-      ciphertext << Shifter.shift_letter(shifted, date_shift_ary[abcd_index])
+      translation << Shifter.shift_letter(shifted, date_shift_ary[abcd_index])
     end
-    ciphertext
+    translation
   end
 
   def encrypt(message, key = random_key, date = todays_date)
     key_shift_ary = KeyShiftGenerator.new(key).key_shift_array
     date_shift_ary = DateShiftGenerator.new(date).date_shift_array
-    ciphertext = generate_ciphertext(message, key_shift_ary, date_shift_ary)
+    ciphertext = translate(message, key_shift_ary, date_shift_ary)
     {encryption: ciphertext, key: key, date: date}
   end
 
-# def decrypt(ciphertext, key, date)
-#   # TO DO
-#   {
-#     decryption: message, # TO DO
-#     key: key,
-#     date: date
-#   }
-# end
+  def decrypt(ciphertext, key, date = todays_date)
+    key_shift_ary = KeyShiftGenerator.new(key).neg_key_shift_array
+    date_shift_ary = DateShiftGenerator.new(date).neg_date_shift_array
+    message = translate(ciphertext, key_shift_ary, date_shift_ary)
+    {
+      decryption: message,
+      key: key,
+      date: date
+    }
+  end
 end
