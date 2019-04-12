@@ -31,4 +31,8 @@ class KeyShiftGeneratorTest < Minitest::Test
     key_shift_gen3 = KeyShiftGenerator.new("50763")
     assert_equal [50, 7, 76, 63], key_shift_gen3.key_shift_array
   end
+
+  def test_neg_key_shift_array_returns_negatives_of_key_shift_array
+    assert_equal [-58, -84, -46, -67], @key_shift_gen1.neg_key_shift_array
+  end
 end
