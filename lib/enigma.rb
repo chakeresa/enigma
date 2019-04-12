@@ -34,10 +34,6 @@ class Enigma
     key_shift_ary = KeyShiftGenerator.new(key).neg_key_shift_array
     date_shift_ary = DateShiftGenerator.new(date).neg_date_shift_array
     message = translate(ciphertext, key_shift_ary, date_shift_ary)
-    {
-      decryption: message,
-      key: key,
-      date: date
-    }
+    {decryption: message, key: key, date: date}
   end
 end
