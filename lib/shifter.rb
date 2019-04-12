@@ -1,0 +1,2 @@
+class Shifter
+end
