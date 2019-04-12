@@ -2,7 +2,7 @@ class KeyShiftGenerator
   attr_reader :key
 
   def initialize(key)
-    @key = key
+    @key = ('%5s' % key.to_s).gsub(" ", "0")
   end
 
   def key_shift_array

@@ -13,6 +13,11 @@ class KeyShiftGeneratorTest < Minitest::Test
     assert_equal "58467", @key_shift_gen1.key
   end
 
+  def test_key_is_a_string_with_leading_zeroes_even_if_fed_integer
+    key_shift_gen4 = KeyShiftGenerator.new(705)
+    assert_equal "00705", key_shift_gen4.key
+  end
+
   def test_key_shift_array_returns_array_of_abcd_keys
     assert_equal [58, 84, 46, 67], @key_shift_gen1.key_shift_array
   end
