@@ -9,8 +9,20 @@ class KeyShiftGeneratorTest < Minitest::Test
     assert_instance_of KeyShiftGenerator, @key_shift_gen1
   end
 
-  def test_it_inits_with_a_key
+  def test_it_inits_with_key_length_and_a_key
+    assert_equal 5, @key_shift_gen1.key_length
     assert_equal "58467", @key_shift_gen1.key
+  end
+
+  def test_init_adds_padding_to_key_input
+    assert_equal "00476", KeyShiftGenerator.new(476).key
+    assert_equal "00476", KeyShiftGenerator.new("476").key
+  end
+
+  def test_init_throws_error_if_key_input_too_long_or_non_numerical
+    skip
+    assert_equal # TO DO: throw error, KeyShiftGenerator.new("474546").key
+    assert_equal # TO DO: throw error, KeyShiftGenerator.new("hi7").key
   end
 
   def test_key_is_a_string_with_leading_zeroes_even_if_fed_integer
