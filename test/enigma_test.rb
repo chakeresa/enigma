@@ -25,6 +25,7 @@ class EnigmaTest < Minitest::Test
 
   def test_todays_date_returns_ddmmyy
     assert_equal 6, @enigma.todays_date.length
+    assert_instance_of String, @enigma.todays_date
     assert_equal Date.today.day, @enigma.todays_date[0..1].to_i
     assert_equal Date.today.month, @enigma.todays_date[2..3].to_i
 
