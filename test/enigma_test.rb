@@ -23,6 +23,15 @@ class EnigmaTest < Minitest::Test
     assert_instance_of String, lots_of_random_keys[0]
   end
 
+  def test_todays_date_returns_ddmmyy
+    assert_equal 6, @enigma.todays_date.length
+    assert_equal Date.today.day, @enigma.todays_date[0..1].to_i
+    assert_equal Date.today.month, @enigma.todays_date[2..3].to_i
+
+    yy = Date.today.year.to_s[-2..-1].to_i
+    assert_equal yy, @enigma.todays_date[4..5].to_i
+  end
+
   def test_encrypt_lowercase_and_spaces_only_returns_hash
     skip
     expected = {

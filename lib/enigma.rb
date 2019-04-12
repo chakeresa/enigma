@@ -9,6 +9,10 @@ class Enigma
     ('%5s' % random_number_string).gsub(" ", "0")
   end
 
+  def todays_date
+    Date.today.strftime("%d%m%y")
+  end
+
 # def encrypt(message, key, date)
 #   # TO DO
 #   {
