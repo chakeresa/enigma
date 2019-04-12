@@ -23,4 +23,16 @@ class ShifterTest < Minitest::Test
     expected = ["y", "z", " ", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x"]
     assert_equal expected, @shifter.shifted_set(-3)
   end
+
+  def test_shift_letter_returns_new_letter_given_orig_lowercase_letter_and_shift
+    assert_equal "f", @shifter.shift_letter("d", 2)
+  end
+
+  def test_shift_letter_returns_new_letter_given_orig_uppercase_letter_and_shift
+    assert_equal "w", @shifter.shift_letter("Z", -3)
+  end
+
+  def test_shift_letter_returns_new_letter_given_orig_uppercase_letter_and_shift
+    assert_equal "&", @shifter.shift_letter("&", 2)
+  end
 end
