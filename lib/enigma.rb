@@ -1,6 +1,7 @@
 require 'date'
 require_relative 'shifter'
 require_relative 'key_shift_generator'
+require_relative 'date_shift_generator'
 
 class Enigma
 # def encrypt(message, key, date)
