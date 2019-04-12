@@ -24,15 +24,15 @@ class Enigma
   end
 
   def encrypt(message, key = random_key, date = todays_date)
-    key_shift_ary = KeyShiftGenerator.new(key).key_shift_array
-    date_shift_ary = DateShiftGenerator.new(date).date_shift_array
+    key_shift_ary = KeyShiftGenerator.new(key).shift_array
+    date_shift_ary = DateShiftGenerator.new(date).shift_array
     ciphertext = translate(message, key_shift_ary, date_shift_ary)
     {encryption: ciphertext, key: key, date: date}
   end
 
   def decrypt(ciphertext, key, date = todays_date)
-    key_shift_ary = KeyShiftGenerator.new(key).neg_key_shift_array
-    date_shift_ary = DateShiftGenerator.new(date).neg_date_shift_array
+    key_shift_ary = KeyShiftGenerator.new(key).neg_shift_array
+    date_shift_ary = DateShiftGenerator.new(date).neg_shift_array
     message = translate(ciphertext, key_shift_ary, date_shift_ary)
     {decryption: message, key: key, date: date}
   end
