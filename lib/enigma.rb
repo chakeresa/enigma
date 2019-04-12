@@ -16,7 +16,7 @@ class Enigma
   def translate(message, key_shift_ary, date_shift_ary)
     translation = ""
     message.each_char.with_index do |char, index_of_char|
-      abcd_index = index_of_char % 4
+      abcd_index = index_of_char % ShiftGenerator::SHIFT_COUNT
       shifted = Shifter.shift_letter(char, key_shift_ary[abcd_index])
       translation << Shifter.shift_letter(shifted, date_shift_ary[abcd_index])
     end
