@@ -11,7 +11,7 @@ class EnigmaTest < Minitest::Test
 
   def test_generate_random_key_returns_a_5_digit_string_with_leading_zeroes
     lots_of_random_keys = []
-    10000.times {lots_of_random_keys << @enigma.generate_random_key}
+    10000.times {lots_of_random_keys << @enigma.random_key}
 
     all_five_digits = lots_of_random_keys.all? {|key| key.length == 5}
     small_numbers_start_w_zero = lots_of_random_keys.all? do |key|
@@ -34,7 +34,6 @@ class EnigmaTest < Minitest::Test
   end
 
   def test_encrypt_lowercase_and_spaces_only_returns_hash
-    skip
     expected = {
       encryption: "keder ohulw",
       key: "02715",
@@ -42,25 +41,29 @@ class EnigmaTest < Minitest::Test
     }
 
     assert_equal expected, @enigma.encrypt("hello world", "02715", "040895")
-    # The encrypt method takes a message String as an argument. It can optionally take a Key and Date as arguments to use for encryption. If the key is not included, generate a random key. If the date is not included, use today’s date.
   end
 
   def test_encrypt_makes_uppercase_become_lowercase
-    skip
-    encrypted = @enigma.encrypt("HELLO world", "040895", "02715")[:encryption]
+    encrypted = @enigma.encrypt("HELLO world", "02715", "040895")[:encryption]
+
     assert_equal "keder ohulw", encrypted
   end
 
   def test_encrypt_doesnt_change_special_characters
-    skip
-    encrypted = @enigma.encrypt("hello world!", "040895", "02715")[:encryption]
+    encrypted = @enigma.encrypt("hello world!", "02715", "040895")[:encryption]
     assert_equal "keder ohulw!", encrypted
   end
 
   def test_encrypt_with_no_date_uses_todays_date
-    skip
-    # expected = ? # TO DO
-    # assert_equal expected, @enigma.encrypt("hello world", "02715")
+    dd = ('%2s' % Date.today.day.to_s).gsub(" ", "0")
+    mm = ('%2s' % Date.today.month.to_s).gsub(" ", "0")
+    yy = ('%2s' % Date.today.year.to_s[-2..-1]).gsub(" ", "0")
+    expected_date = dd + mm + yy
+
+    encrypt_return = @enigma.encrypt("hello world", "02715")
+
+    assert_equal expected_date, encrypt_return[:date]
+    assert_equal @enigma.encrypt("hello world", "02715", expected_date), encrypt_return
   end
 
   def test_encrypt_with_no_optional_args_returns_hash
