@@ -13,4 +13,9 @@ class DateShiftGenerator
     last_four_digits = date_key_squared.to_s[-4..-1]
     last_four_digits.chars.map {|character| character.to_i}
   end
+
+  # TO DO: consider creating a ShiftGenerator superclass that will do this for both KeyShiftGenerator and DateShiftGenerator
+  def neg_date_shift_array
+    date_shift_array.map {|shift| -1 * shift}
+  end
 end
