@@ -12,4 +12,8 @@ class DateShiftGeneratorTest < Minitest::Test
   def test_it_inits_with_a_date_key_string
     assert_equal "011218", @date_shift_gen1.date_key
   end
+
+  def test_date_shift_array_returns_array_of_abcd_offsets
+    assert_equal [3, 5, 2, 4], @date_shift_gen1.date_shift_array
+  end
 end
