@@ -29,11 +29,11 @@ class ShiftGeneratorTest < Minitest::Test
   def test_validate_key_input_throws_error_if_key_input_too_long_or_nonnumerical
     error_message = "Key input should be numerical and 7 digits at most."
     err1 = assert_raises(RuntimeError) do
-      KeyShiftGenerator.new("478884546").validate_key_input
+      ShiftGenerator.new("478884546").validate_key_input
     end
     assert_equal error_message, err1.message
     err2 = assert_raises(RuntimeError) do
-      KeyShiftGenerator.new("hi7").validate_key_input
+      ShiftGenerator.new("hi7").validate_key_input
     end
     assert_equal error_message, err2.message
   end

@@ -13,9 +13,7 @@ class ShiftGenerator
     if !all_numerical || @key_input.to_s.length > @key_length
       raise "Key input should be numerical and #{@key_length} digits at most."
     else
-      # format = '%' + '5' + 's'
       format = '%' + @key_length.to_s + 's'
-      # TO DO: ^ uncomment & deal with fallout from this change -- may need @key_length constant (should pull from subclass not ShiftGenerator itself)
       @formatted_key = (format % @key_input.to_s).gsub(" ", "0")
     end
   end
