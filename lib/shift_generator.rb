@@ -1,22 +1,21 @@
 class ShiftGenerator
   SHIFT_COUNT = 4
-  KEY_LENGTH = 7
 
-  attr_reader :key_input, :formatted_key
+  attr_reader :key_input, :key_length, :formatted_key
 
   def initialize(key_input)
     @key_input = key_input
+    @key_length = 7
   end
 
   def validate_key_input
     all_numerical = @key_input.to_s.scan(/\d/).length == @key_input.to_s.length
-    if !all_numerical || @key_input.to_s.length > KEY_LENGTH
-      raise "Key input should be numerical and #{KEY_LENGTH} digits at most."
-      # TO DO: throw error (should be numerical & less than KEY_LENGTH digits)
+    if !all_numerical || @key_input.to_s.length > @key_length
+      raise "Key input should be numerical and #{@key_length} digits at most."
     else
-      format = '%' + '5' + 's'
-      # format = '%' + KEY_LENGTH.to_s + 's'
-      # TO DO: ^ uncomment & deal with fallout from this change -- may need KEY_LENGTH constant (should pull from subclass not ShiftGenerator itself)
+      # format = '%' + '5' + 's'
+      format = '%' + @key_length.to_s + 's'
+      # TO DO: ^ uncomment & deal with fallout from this change -- may need @key_length constant (should pull from subclass not ShiftGenerator itself)
       @formatted_key = (format % @key_input.to_s).gsub(" ", "0")
     end
   end

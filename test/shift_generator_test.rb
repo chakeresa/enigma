@@ -13,8 +13,8 @@ class ShiftGeneratorTest < Minitest::Test
     assert_equal 4, ShiftGenerator::SHIFT_COUNT
   end
 
-  def test_it_has_dummy_key_length_const_equal_to_seven
-    assert_equal 7, ShiftGenerator::KEY_LENGTH
+  def test_it_has_dummy_key_length_attr_equal_to_seven
+    assert_equal 7, @shift_gen1.key_length
   end
 
   def test_it_has_key_input_upon_init
