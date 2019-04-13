@@ -9,33 +9,41 @@ class DateShiftGeneratorTest < Minitest::Test
     assert_instance_of DateShiftGenerator, @date_shift_gen1
   end
 
-  def test_it_has_a_key_length_constant
-    assert_equal 6, DateShiftGenerator::KEY_LENGTH
+  def test_it_inits_with_a_key_input
+    assert_equal "011218", @date_shift_gen1.key_input
+
+    invalid_input = DateShiftGenerator.new("9999999999")
+    assert_equal "9999999999", invalid_input.key_input
   end
 
-  def test_init_adds_padding_to_key_input
-    skip
-    # TO DO: fix ShiftGenerator#validate_key_input so it pads to KEY_LENGTH instead of hard-entered 5
-    assert_equal "011419", DateShiftGenerator.new(11419).key
-    assert_equal "011419", DateShiftGenerator.new("11419").key
+  def test_it_has_a_key_length_of_6
+    assert_equal 6, @date_shift_gen1.key_length
   end
 
-  def test_init_throws_error_if_key_input_too_long_or_non_numerical
-    # TO DO: test a 7 digit input after fixing KEY_LENGTH issue
-    skip
+  def test_it_inits_with_no_formatted_key
+    assert_nil @date_shift_gen1.formatted_key
+  end
+
+  def test_validate_key_input_adds_padding_to_key_input
+    integer_input = DateShiftGenerator.new(11419)
+    assert_equal "011419", integer_input.validate_key_input
+    assert_equal "011419", integer_input.formatted_key
+
+    string_input = DateShiftGenerator.new("11419")
+    assert_equal "011419", string_input.validate_key_input
+    assert_equal "011419", string_input.formatted_key
+  end
+
+  def test_validate_key_input_throws_error_if_key_input_too_long_or_non_numerical
     error_message = "Key input should be numerical and 6 digits at most."
     err1 = assert_raises(RuntimeError) do
-      DateShiftGenerator.new("12042019").key
+      DateShiftGenerator.new("12042019").validate_key_input
     end
     assert_equal error_message, err1.message
     err2 = assert_raises(RuntimeError) do
-      DateShiftGenerator.new("apr11").key
+      DateShiftGenerator.new("apr11").validate_key_input
     end
     assert_equal error_message, err2.message
-  end
-
-  def test_it_inits_with_a_date_key_string
-    assert_equal "011218", @date_shift_gen1.key
   end
 
   def test_shift_array_returns_array_of_abcd_offsets
