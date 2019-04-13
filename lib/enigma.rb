@@ -7,8 +7,8 @@ class Enigma
   def random_key
     max_number = "9" * (ShiftGenerator::SHIFT_COUNT + 1)
     random_number_string = rand(max_number.to_i).to_s
-    ('%5s' % random_number_string).gsub(" ", "0")
-    # TO DO: ^ figure out how to change 5 to SHIFT_COUNT + 1
+    format = '%' + KeyShiftGenerator.new(0).key_length.to_s + 's'
+    (format % random_number_string).gsub(" ", "0")
   end
 
   def todays_date
