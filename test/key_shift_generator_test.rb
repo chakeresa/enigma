@@ -21,7 +21,7 @@ class KeyShiftGeneratorTest < Minitest::Test
     assert_nil @key_shift_gen1.formatted_key
   end
 
-  def test_init_adds_padding_to_key_input
+  def test_validate_key_input_adds_padding_to_key_input
     integer_input = KeyShiftGenerator.new(476)
     assert_equal "00476", integer_input.validate_key_input
     assert_equal "00476", integer_input.formatted_key
@@ -31,7 +31,7 @@ class KeyShiftGeneratorTest < Minitest::Test
     assert_equal "00476", string_input.formatted_key
   end
 
-  def test_init_throws_error_if_key_input_too_long_or_non_numerical
+  def test_validate_key_input_throws_error_if_key_input_too_long_or_nonnumerical
     error_message = "Key input should be numerical and 5 digits at most."
     err1 = assert_raises(RuntimeError) do
       KeyShiftGenerator.new("548138").validate_key_input
@@ -43,7 +43,7 @@ class KeyShiftGeneratorTest < Minitest::Test
     assert_equal error_message, err2.message
   end
 
-  def test_key_is_a_string_with_leading_zeroes_even_if_fed_integer
+  def test_formatted_key_is_a_string_with_leading_zeroes_even_if_fed_integer
     key_shift_gen4 = KeyShiftGenerator.new(705)
     assert_equal "00705", key_shift_gen4.validate_key_input
     assert_equal "00705", key_shift_gen4.formatted_key
