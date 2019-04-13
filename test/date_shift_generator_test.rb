@@ -21,9 +21,17 @@ class DateShiftGeneratorTest < Minitest::Test
   end
 
   def test_init_throws_error_if_key_input_too_long_or_non_numerical
+    # TO DO: test a 7 digit input after fixing KEY_LENGTH issue
     skip
-    assert_equal # TO DO: throw error, DateShiftGenerator.new("12042019").key
-    assert_equal # TO DO: throw error, DateShiftGenerator.new("apr11").key
+    error_message = "Key input should be numerical and 6 digits at most."
+    err1 = assert_raises(RuntimeError) do
+      DateShiftGenerator.new("12042019").key
+    end
+    assert_equal error_message, err1.message
+    err2 = assert_raises(RuntimeError) do
+      DateShiftGenerator.new("apr11").key
+    end
+    assert_equal error_message, err2.message
   end
 
   def test_it_inits_with_a_date_key_string

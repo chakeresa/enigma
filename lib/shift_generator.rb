@@ -11,10 +11,13 @@ class ShiftGenerator
   def validate_key_input(key_input)
     all_numerical = key_input.to_s.scan(/\d/).length == key_input.to_s.length
     if !all_numerical || key_input.to_s.length > KEY_LENGTH
+      raise "Key input should be numerical and #{KEY_LENGTH} digits at most."
       # TO DO: throw error (should be numerical & less than KEY_LENGTH digits)
     else
-      ('%5s' % key_input.to_s).gsub(" ", "0")
-      # TO DO: ^ figure out how to change 5 to KEY_LENGTH
+      format = '%' + '5' + 's'
+      # format = '%' + KEY_LENGTH.to_s + 's'
+      # TO DO: ^ uncomment & deal with fallout from this change -- may need KEY_LENGTH constant (should pull from subclass not ShiftGenerator itself)
+      (format % key_input.to_s).gsub(" ", "0")
     end
   end
 
