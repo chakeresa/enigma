@@ -92,26 +92,24 @@ class EnigmaTest < Minitest::Test
   end
 
   def test_crack_gets_message_out
-    cracked = @enigma.crack("vjqtbeaweqihssi", "291018")
     expected = {
       decryption: "hello world end",
       key: "08304",
       date: "291018"
     }
 
-    assert_equal expected, cracked
+    assert_equal expected, @enigma.crack("vjqtbeaweqihssi", "291018")
   end
 
   def test_crack_gets_message_out_without_date
     skip
     # TO DO: fix -- not working with today's date for some reason
-    cracked = @enigma.crack("vjqtbeaweqihssi")
     expected = {
       decryption: "hello world end",
       key: "08304",
       date: @expected_date
     }
 
-    assert_equal expected, cracked
+    assert_equal expected, @enigma.crack("vjqtbeaweqihssi")
   end
 end
