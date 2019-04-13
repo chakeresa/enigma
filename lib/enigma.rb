@@ -7,7 +7,7 @@ class Enigma
   def random_key
     max_number = "9" * (ShiftGenerator::SHIFT_COUNT + 1)
     random_number_string = rand(max_number.to_i).to_s
-    format = '%' + KeyShiftGenerator.new(0).key_length.to_s + 's'
+    format = KeyShiftGenerator.new(0).format
     (format % random_number_string).gsub(" ", "0")
   end
 
