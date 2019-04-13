@@ -8,7 +8,7 @@
 
 require './lib/enigma'
 
-# Use the CLI like this: `ruby ./lib/crack.rb ./data/encrypted.txt ./data/cracked.txt 240818`
+# Use the CLI like this: `ruby ./lib/crack.rb ./data/encrypted.txt ./data/cracked.txt <optional date>`
 
 encrypted_filepath = ARGV[0]
 encrypted_file = File.open(encrypted_filepath, "r")
@@ -23,4 +23,4 @@ cracked_file = File.open(cracked_filepath, "w")
 cracked_file.write(crack_hash[:decryption])
 cracked_file.close
 
-puts "Created '#{cracked_filepath}' with the key #{crack_hash[:key]} and date #{crack_hash[:date]}"
+puts "Created '#{cracked_filepath}' with the cracked key #{crack_hash[:key]} and date #{crack_hash[:date]}"
