@@ -54,6 +54,8 @@ class Enigma
         require "pry"; binding.pry
       end
     end
-    decrypt(ciphertext, KeyShiftGenerator.new(key_guess - 1).key, date)
+    formatted_key = KeyShiftGenerator.new(key_guess - 1).validate_key_input
+    formatted_date = DateShiftGenerator.new(date).validate_key_input
+    decrypt(ciphertext, formatted_key, formatted_date)
   end
 end
