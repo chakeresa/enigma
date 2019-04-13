@@ -1,13 +1,14 @@
 require './lib/enigma'
 
-# Use the CLI like this: `ruby ./lib/encrypt.rb ./data/message.txt ./data/encrypted.txt`
+# Use the CLI like this: `ruby ./lib/encrypt.rb ./data/message.txt ./data/encrypted.txt <optional key> <optional date>`
 
 message_filepath = ARGV[0]
 message_file = File.open(message_filepath, "r")
 message = message_file.read
 
-# TO DO: allow for optional arguments similar to decrypt.rb
-encrypt_hash = Enigma.new.encrypt(message)
+key = ARGV[2].nil? ? Enigma.new.random_key : ARGV[2]
+date = ARGV[3].nil? ? Enigma.new.todays_date : ARGV[3]
+encrypt_hash = Enigma.new.encrypt(message, key, date)
 
 encrypted_filepath = ARGV[1]
 encrypted_file = File.open(encrypted_filepath, "w")

@@ -13,7 +13,7 @@
 
 require './lib/enigma'
 
-# Use the CLI like this: `ruby ./lib/decrypt.rb ./data/encrypted.txt ./data/decrypted.txt 82648 240818`
+# Use the CLI like this: `ruby ./lib/decrypt.rb ./data/encrypted.txt ./data/decrypted.txt <key> <optional date>`
 
 encrypted_filepath = ARGV[0]
 encrypted_file = File.open(encrypted_filepath, "r")
