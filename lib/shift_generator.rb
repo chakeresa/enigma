@@ -13,9 +13,12 @@ class ShiftGenerator
     if !all_numerical || @key_input.to_s.length > @key_length
       raise "Key input should be numerical and #{@key_length} digits at most."
     else
-      format = '%' + @key_length.to_s + 's'
       @formatted_key = (format % @key_input.to_s).gsub(" ", "0")
     end
+  end
+
+  def format
+    '%' + @key_length.to_s + 's'
   end
 
   def neg_shift_array
