@@ -39,4 +39,21 @@ class Enigma
     message = translate(shifted, date_shift_ary)
     {decryption: message, key: key, date: date}
   end
+
+  # TO DO: break up using helper method
+  def crack(ciphertext, date = todays_date)
+    date_shift_ary = DateShiftGenerator.new(date).neg_shift_array
+    shifted = translate(ciphertext, date_shift_ary)
+    decrypted = shifted
+    key_guess = 0
+    while decrypted[(-1 * ShiftGenerator::SHIFT_COUNT)..-1] != " end"
+      key_shift_ary = KeyShiftGenerator.new(key_guess).neg_shift_array
+      decrypted = translate(shifted, key_shift_ary)
+      key_guess += 1
+      if key_guess == 99999
+        require "pry"; binding.pry
+      end
+    end
+    decrypt(ciphertext, KeyShiftGenerator.new(key_guess - 1).key, date)
+  end
 end
