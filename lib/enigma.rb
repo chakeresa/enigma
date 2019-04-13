@@ -7,8 +7,8 @@ class Enigma
   def random_key
     max_number = "9" * (ShiftGenerator::SHIFT_COUNT + 1)
     random_number_string = rand(max_number.to_i).to_s
-    ('%5s' % random_number_string).gsub(" ", "0")
-    # TO DO: ^ figure out how to change 5 to SHIFT_COUNT + 1
+    format = KeyShiftGenerator.new(0).format
+    (format % random_number_string).gsub(" ", "0")
   end
 
   def todays_date
@@ -54,6 +54,8 @@ class Enigma
         require "pry"; binding.pry
       end
     end
-    decrypt(ciphertext, KeyShiftGenerator.new(key_guess - 1).key, date)
+    formatted_key = KeyShiftGenerator.new(key_guess - 1).validate_key_input
+    formatted_date = DateShiftGenerator.new(date).validate_key_input
+    decrypt(ciphertext, formatted_key, formatted_date)
   end
 end

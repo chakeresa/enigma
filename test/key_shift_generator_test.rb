@@ -9,36 +9,44 @@ class KeyShiftGeneratorTest < Minitest::Test
     assert_instance_of KeyShiftGenerator, @key_shift_gen1
   end
 
-  def test_it_inits_with_a_key
-    assert_equal "58467", @key_shift_gen1.key
+  def test_it_inits_with_a_key_input
+    assert_equal "58467", @key_shift_gen1.key_input
   end
 
-  def test_it_has_a_key_length_constant
-    assert_equal 5, KeyShiftGenerator::KEY_LENGTH
+  def test_it_has_a_key_length_of_5
+    assert_equal 5, @key_shift_gen1.key_length
   end
 
-  def test_init_adds_padding_to_key_input
-    assert_equal "00476", KeyShiftGenerator.new(476).key
-    assert_equal "00476", KeyShiftGenerator.new("476").key
+  def test_it_inits_with_no_formatted_key
+    assert_nil @key_shift_gen1.formatted_key
   end
 
-  def test_init_throws_error_if_key_input_too_long_or_non_numerical
-    # TO DO: test a 7 digit input after fixing KEY_LENGTH issue
-    skip
+  def test_validate_key_input_adds_padding_to_key_input
+    integer_input = KeyShiftGenerator.new(476)
+    assert_equal "00476", integer_input.validate_key_input
+    assert_equal "00476", integer_input.formatted_key
+
+    string_input = KeyShiftGenerator.new(476)
+    assert_equal "00476", string_input.validate_key_input
+    assert_equal "00476", string_input.formatted_key
+  end
+
+  def test_validate_key_input_throws_error_if_key_input_too_long_or_nonnumerical
     error_message = "Key input should be numerical and 5 digits at most."
     err1 = assert_raises(RuntimeError) do
-      KeyShiftGenerator.new("478884546").key
+      KeyShiftGenerator.new("548138").validate_key_input
     end
     assert_equal error_message, err1.message
     err2 = assert_raises(RuntimeError) do
-      KeyShiftGenerator.new("hi7").key
+      KeyShiftGenerator.new("hi7").validate_key_input
     end
     assert_equal error_message, err2.message
   end
 
-  def test_key_is_a_string_with_leading_zeroes_even_if_fed_integer
+  def test_formatted_key_is_a_string_with_leading_zeroes_even_if_fed_integer
     key_shift_gen4 = KeyShiftGenerator.new(705)
-    assert_equal "00705", key_shift_gen4.key
+    assert_equal "00705", key_shift_gen4.validate_key_input
+    assert_equal "00705", key_shift_gen4.formatted_key
   end
 
   def test_shift_array_returns_array_of_abcd_keys
