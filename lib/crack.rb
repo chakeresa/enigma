@@ -5,3 +5,22 @@
 # Created 'encrypted.txt' with the key 82648 and date 240818
 # $ ruby ./lib/crack.rb encrypted.txt cracked.txt 240818
 # Created 'cracked.txt' with the cracked key 82648 and date 240818
+
+require './lib/enigma'
+
+# Use the CLI like this: `ruby ./lib/crack.rb ./data/encrypted.txt ./data/cracked.txt 240818`
+
+encrypted_filepath = ARGV[0]
+encrypted_file = File.open(encrypted_filepath, "r")
+encryption = encrypted_file.read
+
+date = ARGV[2].nil? ? Enigma.new.todays_date : ARGV[2]
+# TO DO: make sure works after crack is fixed (for todays_date case)
+crack_hash = Enigma.new.crack(encryption, date)
+
+cracked_filepath = ARGV[1]
+cracked_file = File.open(cracked_filepath, "w")
+cracked_file.write(crack_hash[:decryption])
+cracked_file.close
+
+puts "Created '#{cracked_filepath}' with the key #{crack_hash[:key]} and date #{crack_hash[:date]}"
