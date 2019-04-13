@@ -23,14 +23,16 @@ class KeyShiftGeneratorTest < Minitest::Test
   end
 
   def test_init_throws_error_if_key_input_too_long_or_non_numerical
-    # TO DO: test a 7 digit input after fixing KEY_LENGTH issue, check for error_message
+    # TO DO: test a 7 digit input after fixing KEY_LENGTH issue
     error_message = "Key input should be numerical and 5 digits at most."
-    assert_raises(RuntimeError) do
+    err1 = assert_raises(RuntimeError) do
       KeyShiftGenerator.new("478884546").key
     end
-    assert_raises(RuntimeError) do
+    assert_equal error_message, err1.message
+    err2 = assert_raises(RuntimeError) do
       KeyShiftGenerator.new("hi7").key
     end
+    assert_equal error_message, err2.message
   end
 
   def test_key_is_a_string_with_leading_zeroes_even_if_fed_integer
