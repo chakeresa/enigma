@@ -1,11 +1,18 @@
-# Command Line Interface
-# Add a command line interface for encryption and decryption. You should create a Runner file called encrypt.rb that takes two command line arguments. The first is an existing file that contains a message to encrypt. The second is a file where your program should write the encrypted message. In addition to writing the encrypted message to the file, your program should output to the screen the file it wrote to, the key and the date.
-#
-# You should be able to use your CLI like this:
-#
-# $ ruby ./lib/encrypt.rb message.txt encrypted.txt
-# Created 'encrypted.txt' with the key 82648 and date 240818
-#
-# See this Lesson Plan for more info about working with files. http://backend.turing.io/module1/lessons/working_with_files
-#
-# You do not have to test your command line interface
+require './lib/enigma'
+
+# Use the CLI like this: `ruby ./lib/encrypt.rb ./data/message.txt ./data/encrypted.txt <optional key> <optional date>`
+
+message_filepath = ARGV[0]
+message_file = File.open(message_filepath, "r")
+message = message_file.read
+
+key = ARGV[2].nil? ? Enigma.new.random_key : ARGV[2]
+date = ARGV[3].nil? ? Enigma.new.todays_date : ARGV[3]
+encrypt_hash = Enigma.new.encrypt(message, key, date)
+
+encrypted_filepath = ARGV[1]
+encrypted_file = File.open(encrypted_filepath, "w")
+encrypted_file.write(encrypt_hash[:encryption])
+encrypted_file.close
+
+puts "Created '#{encrypted_filepath}' with the key #{encrypt_hash[:key]} and date #{encrypt_hash[:date]}"
