@@ -51,8 +51,13 @@ class Enigma
       decrypted = translate(shifted, key_shift_ary)
       key_guess += 1
     end
-    formatted_key = KeyShiftGenerator.new(key_guess - 1).validate_key_input
-    formatted_date = DateShiftGenerator.new(date).validate_key_input
-    decrypt(ciphertext, formatted_key, formatted_date)
+    formatted_keys = format_keys(key_guess - 1, date)
+    decrypt(ciphertext, formatted_keys[:key], formatted_keys[:date])
+  end
+
+  def format_keys(key_input, date_input)
+    formatted_key = KeyShiftGenerator.new(key_input).validate_key_input
+    formatted_date = DateShiftGenerator.new(date_input).validate_key_input
+    {key: formatted_key, date: formatted_date}
   end
 end
