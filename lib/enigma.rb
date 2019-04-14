@@ -29,7 +29,8 @@ class Enigma
     date_shift_ary = DateShiftGenerator.new(date).shift_array
     shifted = translate(message, key_shift_ary)
     ciphertext = translate(shifted, date_shift_ary)
-    {encryption: ciphertext, key: key, date: date}
+    pretty_keys = format_keys(key, date)
+    {encryption: ciphertext, key: pretty_keys[:key], date: pretty_keys[:date]}
   end
 
   def decrypt(ciphertext, key, date = todays_date)
@@ -37,8 +38,8 @@ class Enigma
     date_shift_ary = DateShiftGenerator.new(date).neg_shift_array
     shifted = translate(ciphertext, key_shift_ary)
     message = translate(shifted, date_shift_ary)
-    formatted_keys = format_keys(key, date)
-    {decryption: message, key: formatted_keys[:key], date: formatted_keys[:date]}
+    pretty_keys = format_keys(key, date)
+    {decryption: message, key: pretty_keys[:key], date: pretty_keys[:date]}
   end
 
   # TO DO: break up using helper method
@@ -46,12 +47,14 @@ class Enigma
     date_shift_ary = DateShiftGenerator.new(date).neg_shift_array
     shifted = translate(ciphertext, date_shift_ary)
     decrypted = shifted
+
     key_guess = 0
     while decrypted[(-1 * ShiftGenerator::SHIFT_COUNT)..-1] != " end"
       key_shift_ary = KeyShiftGenerator.new(key_guess).neg_shift_array
       decrypted = translate(shifted, key_shift_ary)
       key_guess += 1
     end
+
     decrypt(ciphertext, key_guess - 1, date)
   end
 
