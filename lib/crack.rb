@@ -12,7 +12,7 @@ require './lib/enigma'
 
 encrypted_filepath = ARGV[0]
 encrypted_file = File.open(encrypted_filepath, "r")
-encryption = encrypted_file.read
+encryption = encrypted_file.read.chomp
 
 date = ARGV[2].nil? ? Enigma.new.todays_date : ARGV[2]
 # TO DO: make sure works after crack is fixed (for todays_date case)
