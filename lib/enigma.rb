@@ -50,9 +50,6 @@ class Enigma
       key_shift_ary = KeyShiftGenerator.new(key_guess).neg_shift_array
       decrypted = translate(shifted, key_shift_ary)
       key_guess += 1
-      if key_guess == 99999
-        require "pry"; binding.pry
-      end
     end
     formatted_key = KeyShiftGenerator.new(key_guess - 1).validate_key_input
     formatted_date = DateShiftGenerator.new(date).validate_key_input
