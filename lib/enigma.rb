@@ -42,20 +42,22 @@ class Enigma
     {decryption: message, key: pretty_keys[:key], date: pretty_keys[:date]}
   end
 
-  # TO DO: break up using helper method
   def crack(ciphertext, date = todays_date)
     date_shift_ary = DateShiftGenerator.new(date).neg_shift_array
     shifted = translate(ciphertext, date_shift_ary)
-    decrypted = shifted
+    actual_key = find_actual_key(shifted)
+    decrypt(ciphertext, actual_key, date)
+  end
 
+  def find_actual_key(shifted)
+    decrypted = shifted
     key_guess = 0
     while decrypted[(-1 * ShiftGenerator::SHIFT_COUNT)..-1] != " end"
       key_shift_ary = KeyShiftGenerator.new(key_guess).neg_shift_array
       decrypted = translate(shifted, key_shift_ary)
       key_guess += 1
     end
-
-    decrypt(ciphertext, key_guess - 1, date)
+    key_guess - 1
   end
 
   def format_keys(key_input, date_input)
