@@ -49,6 +49,7 @@ class Enigma
     decrypt(ciphertext, actual_key, date)
   end
 
+  # TO DO: refactor?
   def find_actual_key(shifted)
     decrypted = shifted
     key_guess = 0
@@ -56,6 +57,8 @@ class Enigma
       key_shift_ary = KeyShiftGenerator.new(key_guess).neg_shift_array
       decrypted = translate(shifted, key_shift_ary)
       key_guess += 1
+      key_length = KeyShiftGenerator.new(key_guess).key_length
+      raise "Message cannot be cracked." if key_guess == 10 ** key_length
     end
     key_guess - 1
   end
