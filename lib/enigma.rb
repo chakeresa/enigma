@@ -74,11 +74,18 @@ class Enigma
       while all_shifts.last + 27 < 100
         all_shifts << all_shifts.last + 27
       end
-      all_shifts
+      all_shifts.map {|shift| (shift + 1000).to_s[-2..-1]}
     end.rotate!
-    key = ""
+    filtered_options = []
     all_possible_shifts.each_cons(2) do |opt_ary_1, opt_ary_2|
-      # TO DO
+      last_digits_1 = opt_ary_1.map do |possible_shift_1|
+        possible_shift_1.chars.last
+      end
+      first_digits_2 = opt_ary_2.map do |possible_shift_2|
+        possible_shift_2.chars.first
+      end
+      filtered_options << last_digits_1 & first_digits_2
+
     end
     require "pry"; binding.pry
   end
