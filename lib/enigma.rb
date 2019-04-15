@@ -48,10 +48,13 @@ class Enigma
     while decrypted[(-1 * ShiftGenerator::SHIFT_COUNT)..-1] != " end"
       decrypted = decrypt(ciphertext, key_guess, date)[:decryption]
       key_guess += 1
-      key_length = KeyShiftGenerator.new(key_guess).key_length
       raise "Message cannot be cracked." if key_guess == 10 ** key_length
     end
     decrypt(ciphertext, key_guess - 1, date)
+  end
+
+  def key_length
+    KeyShiftGenerator.new(0).key_length
   end
 
   def format_keys(key_input, date_input)

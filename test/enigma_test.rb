@@ -13,6 +13,10 @@ class EnigmaTest < Minitest::Test
     assert_instance_of Enigma, @enigma
   end
 
+  def test_it_has_a_key_length_equal_to_five
+    assert_equal 5, @enigma.key_length
+  end
+
   def test_generate_random_key_returns_a_5_digit_string_with_leading_zeroes
     lots_of_random_keys = []
     10000.times {lots_of_random_keys << @enigma.random_key}
