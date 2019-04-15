@@ -1,5 +1,5 @@
 class ShiftGenerator
-  SHIFT_COUNT = 4
+  SHIFT_COUNT = 3
 
   attr_reader :key_input, :key_length, :formatted_key
 
