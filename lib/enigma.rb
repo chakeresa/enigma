@@ -43,24 +43,15 @@ class Enigma
   end
 
   def crack(ciphertext, date = todays_date)
-    date_shift_ary = DateShiftGenerator.new(date).neg_shift_array
-    shifted = translate(ciphertext, date_shift_ary)
-    actual_key = find_actual_key(shifted)
-    decrypt(ciphertext, actual_key, date)
-  end
-
-  # TO DO: refactor?
-  def find_actual_key(shifted)
-    decrypted = shifted
     key_guess = 0
+    decrypted = decrypt(ciphertext, key_guess, date)[:decryption]
     while decrypted[(-1 * ShiftGenerator::SHIFT_COUNT)..-1] != " end"
-      key_shift_ary = KeyShiftGenerator.new(key_guess).neg_shift_array
-      decrypted = translate(shifted, key_shift_ary)
+      decrypted = decrypt(ciphertext, key_guess, date)[:decryption]
       key_guess += 1
       key_length = KeyShiftGenerator.new(key_guess).key_length
       raise "Message cannot be cracked." if key_guess == 10 ** key_length
     end
-    key_guess - 1
+    decrypt(ciphertext, key_guess - 1, date)
   end
 
   def format_keys(key_input, date_input)
