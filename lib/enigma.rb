@@ -69,6 +69,7 @@ class Enigma
       end
       min_possible_shifts[char_index] = shift_guess
     end
+
     all_possible_shifts = min_possible_shifts.map do |possible_shift|
       all_shifts = [possible_shift]
       while all_shifts.last + 27 < 100
@@ -76,6 +77,7 @@ class Enigma
       end
       all_shifts.map {|shift| (shift + 1000).to_s[-2..-1]}
     end.rotate!
+
     filtered_options = []
     all_possible_shifts.each_cons(2) do |opt_ary_1, opt_ary_2|
       last_digits_1 = opt_ary_1.map do |possible_shift_1|
@@ -84,10 +86,33 @@ class Enigma
       first_digits_2 = opt_ary_2.map do |possible_shift_2|
         possible_shift_2.chars.first
       end
-      filtered_options << last_digits_1 & first_digits_2
-
+      overlap = last_digits_1 & first_digits_2
+      filtered_options << overlap
     end
-    require "pry"; binding.pry
+
+    key_shifts = []
+    key_shifts[1] = all_possible_shifts[1].find_all do |shift1|
+      filtered_options[0].include?(shift1.chars.first) && filtered_options[1].include?(shift1.chars.last)
+    end
+    key_shifts[2] = all_possible_shifts[2].find_all do |shift2|
+      shift2.chars.first == key_shifts[1][0].chars.last && filtered_options[1].include?(shift2.chars.first) && filtered_options[2].include?(shift2.chars.last)
+    end
+    key_shifts[3] = all_possible_shifts[3].find_all do |shift3|
+      shift3.chars.first == key_shifts[2][0].chars.last && filtered_options[2].include?(shift3.chars.first)
+    end
+    key_shifts[0] = all_possible_shifts[0].find_all do |shift0|
+      shift0.chars.last == key_shifts[1][0].chars.first && filtered_options[0].include?(shift0.chars.last)
+    end
+    
+    key = ""
+    key_shifts.flatten.each.with_index do |shift, index|
+      if index == 0
+        key << shift
+      else
+        key << shift.chars.last
+      end
+    end
+    decrypt(ciphertext, key, date)
   end
 
   def key_length
