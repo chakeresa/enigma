@@ -29,7 +29,8 @@ class Enigma
     date_shift_ary = DateShiftGenerator.new(date).shift_array
     shifted = translate(message, key_shift_ary)
     ciphertext = translate(shifted, date_shift_ary)
-    {encryption: ciphertext, key: key, date: date}
+    pretty_keys = format_keys(key, date)
+    {encryption: ciphertext, key: pretty_keys[:key], date: pretty_keys[:date]}
   end
 
   def decrypt(ciphertext, key, date = todays_date)
@@ -37,25 +38,28 @@ class Enigma
     date_shift_ary = DateShiftGenerator.new(date).neg_shift_array
     shifted = translate(ciphertext, key_shift_ary)
     message = translate(shifted, date_shift_ary)
-    {decryption: message, key: key, date: date}
+    pretty_keys = format_keys(key, date)
+    {decryption: message, key: pretty_keys[:key], date: pretty_keys[:date]}
   end
 
-  # TO DO: break up using helper method
   def crack(ciphertext, date = todays_date)
-    date_shift_ary = DateShiftGenerator.new(date).neg_shift_array
-    shifted = translate(ciphertext, date_shift_ary)
-    decrypted = shifted
     key_guess = 0
+    decrypted = decrypt(ciphertext, key_guess, date)[:decryption]
     while decrypted[(-1 * ShiftGenerator::SHIFT_COUNT)..-1] != " end"
-      key_shift_ary = KeyShiftGenerator.new(key_guess).neg_shift_array
-      decrypted = translate(shifted, key_shift_ary)
+      decrypted = decrypt(ciphertext, key_guess, date)[:decryption]
       key_guess += 1
-      if key_guess == 99999
-        require "pry"; binding.pry
-      end
+      raise "Message cannot be cracked." if key_guess == 10 ** key_length
     end
-    formatted_key = KeyShiftGenerator.new(key_guess - 1).validate_key_input
-    formatted_date = DateShiftGenerator.new(date).validate_key_input
-    decrypt(ciphertext, formatted_key, formatted_date)
+    decrypt(ciphertext, key_guess - 1, date)
+  end
+
+  def key_length
+    KeyShiftGenerator.new(0).key_length
+  end
+
+  def format_keys(key_input, date_input)
+    formatted_key = KeyShiftGenerator.new(key_input).validate_key_input
+    formatted_date = DateShiftGenerator.new(date_input).validate_key_input
+    {key: formatted_key, date: formatted_date}
   end
 end
