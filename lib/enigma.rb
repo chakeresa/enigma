@@ -53,6 +53,36 @@ class Enigma
     decrypt(ciphertext, key_guess - 1, date)
   end
 
+  def smart_crack(ciphertext, date = todays_date)
+    end_of_msg = " end"
+    msg_length = ciphertext.length
+    shift_count = ShiftGenerator::SHIFT_COUNT
+    last_four_char_shift_indices = (0..(shift_count - 1)).to_a.rotate(msg_length % shift_count)
+    date_shift_ary = DateShiftGenerator.new(date).neg_shift_array
+    date_shifted_msg = translate(ciphertext, date_shift_ary)
+    last_four_chars = date_shifted_msg[(-1 * shift_count)..-1]
+    min_possible_shifts = []
+    last_four_chars.chars.each.with_index do |char, char_index|
+      shift_guess = 0
+      while Shifter.shift_letter(char, -1 * shift_guess) != end_of_msg[char_index]
+        shift_guess += 1
+      end
+      min_possible_shifts[char_index] = shift_guess
+    end
+    all_possible_shifts = min_possible_shifts.map do |possible_shift|
+      all_shifts = [possible_shift]
+      while all_shifts.last + 27 < 100
+        all_shifts << all_shifts.last + 27
+      end
+      all_shifts
+    end.rotate!
+    key = ""
+    all_possible_shifts.each_cons(2) do |opt_ary_1, opt_ary_2|
+      # TO DO
+    end
+    require "pry"; binding.pry
+  end
+
   def key_length
     KeyShiftGenerator.new(0).key_length
   end
@@ -63,3 +93,7 @@ class Enigma
     {key: formatted_key, date: formatted_date}
   end
 end
+
+Enigma.new.smart_crack("vjqtbeaweqihssi", "291018")
+# key is actually 08304 -- shifts = [08, 83, 30, 04]
+# all_possible_shifts = [[**8**, 35, 62, 89], [2, 29, 56, **83**], [3, **30**, 57, 84], [**4**, 31, 58, 85], ]
