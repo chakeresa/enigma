@@ -78,7 +78,7 @@ class SmartCrackTest < Minitest::Test
   end
 
   def test_filter_all_possible_shifts_fw
-    assert_equal [["08", "35", "62", "89"], ["29", "56", "83"], ["30"], ["04"]], @smart_crack_default.filter_all_possible_shifts_fw
+    assert_equal [["08", "35", "62", "89"], ["29", "56", "83"], ["30"], ["04"]], @smart_crack_default.filter_all_possible_shifts_fw(@smart_crack_default.all_possible_shifts)
   end
 
   def test_filter_all_possible_shifts_bw

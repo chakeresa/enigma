@@ -44,13 +44,18 @@ class SmartCrack
         all_shifts << all_shifts.last + 27
       end
       all_shifts.map {|shift| (shift + 1000).to_s[-2..-1]}
-    end #TO DO: check if working right with different length msg
+    end
   end
 
   def smart_crack
-    all_poss_shifts = filter_all_possible_shifts_fw
+    all_poss_shifts = filter_all_possible_shifts_fw(all_possible_shifts)
     key_shifts = filter_all_possible_shifts_bw(all_poss_shifts)
     raise "Message cannot be cracked with standard key." if key_shifts[0] == []
+    if key_shifts[0].count > 1
+      key_shifts[0] = [key_shifts[0][0]]
+      key_shifts = filter_all_possible_shifts_fw(key_shifts)
+      key_shifts = filter_all_possible_shifts_bw(key_shifts)
+    end
     key = ""
     key_shifts.flatten.each.with_index do |shift, index|
       index == 0 ? key << shift : key << shift.chars.last
@@ -82,8 +87,7 @@ class SmartCrack
     end
   end
 
-  def filter_all_possible_shifts_fw
-    all_poss_shifts = all_possible_shifts
+  def filter_all_possible_shifts_fw(all_poss_shifts)
     for i in 0..(all_poss_shifts.length - 2) do
       opt_ary_prev = all_poss_shifts[i]
       opt_ary_next = all_poss_shifts[i+1]
