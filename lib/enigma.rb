@@ -59,7 +59,7 @@ class Enigma
   def crack(ciphertext, date = todays_date)
     key_guess = 0
     decrypted = decrypt(ciphertext, key_guess, date)[:decryption]
-    while decrypted[-4..-1] != @end_of_msg # TO DO: -4 hard code
+    while decrypted[(-1 * @shift_count)..-1] != @end_of_msg
       decrypted = decrypt(ciphertext, key_guess, date)[:decryption]
       key_guess += 1
       raise "Message cannot be cracked." if key_guess == 10 ** key_length

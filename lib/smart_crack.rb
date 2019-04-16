@@ -2,8 +2,8 @@ module SmartCrack
   def smart_crack(ciphertext, date = todays_date)
     # TO DO: break up with helper methods galore
     msg_length = ciphertext.length
-    shift_count = ShiftGenerator::SHIFT_COUNT
-    last_four_char_shift_indices = (0..(shift_count - 1)).to_a.rotate(msg_length % shift_count)
+    shift_count = @shift_count
+    # last_four_char_shift_indices = (0..(shift_count - 1)).to_a.rotate(msg_length % shift_count)
     date_shift_ary = DateShiftGenerator.new(date).neg_shift_array
     date_shifted_msg = translate(ciphertext, date_shift_ary)
     last_four_chars = date_shifted_msg[(-1 * shift_count)..-1]
