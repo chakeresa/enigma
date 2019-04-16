@@ -78,18 +78,12 @@ class SmartCrackTest < Minitest::Test
   end
 
   def test_filter_all_possible_shifts_fw
-    all_possible_shifts = [["08", "35", "62", "89"], ["02", "29", "56", "83"], ["03", "30", "57", "84"], ["04", "31", "58", "85"]]
-    assert_equal [["08", "35", "62", "89"], ["29", "56", "83"], ["30"], ["04"]], @smart_crack_default.filter_all_possible_shifts_fw(all_possible_shifts)
+    assert_equal [["08", "35", "62", "89"], ["29", "56", "83"], ["30"], ["04"]], @smart_crack_default.filter_all_possible_shifts_fw
   end
 
   def test_filter_all_possible_shifts_bw
-    all_possible_shifts = [["08", "35", "62", "89"], ["29", "56", "83"], ["30"], ["04"]]
-    assert_equal [["08"], ["83"], ["30"], ["04"]], @smart_crack_default.filter_all_possible_shifts_bw(all_possible_shifts)
-  end
-
-  def test_filter_all_possible_shifts_bw_simplified
-    all_possible_shifts = [["01", "02"], ["10"], ["05"]]
-    assert_equal [["01"], ["10"], ["05"]], @smart_crack_default.filter_all_possible_shifts_bw(all_possible_shifts)
+    all_poss_shifts = [["08", "35", "62", "89"], ["29", "56", "83"], ["30"], ["04"]]
+    assert_equal [["08"], ["83"], ["30"], ["04"]], @smart_crack_default.filter_all_possible_shifts_bw(all_poss_shifts)
   end
 
   def test_valid_next_shift_returns_true_if_valid_consecutive_shifts

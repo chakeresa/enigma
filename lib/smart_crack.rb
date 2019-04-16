@@ -48,7 +48,7 @@ class SmartCrack
   end
 
   def smart_crack
-    all_poss_shifts = filter_all_possible_shifts_fw(all_possible_shifts)
+    all_poss_shifts = filter_all_possible_shifts_fw
     key_shifts = filter_all_possible_shifts_bw(all_poss_shifts)
     raise "Message cannot be cracked with standard key." if key_shifts[0] == []
     key = ""
@@ -82,22 +82,23 @@ class SmartCrack
     end
   end
 
-  def filter_all_possible_shifts_fw(all_possible_shifts)
-    for i in 0..(all_possible_shifts.length - 2) do
-      opt_ary_prev = all_possible_shifts[i]
-      opt_ary_next = all_possible_shifts[i+1]
-      all_possible_shifts[i+1] = filtered_shift_ary_fw(opt_ary_prev, opt_ary_next)
+  def filter_all_possible_shifts_fw
+    all_poss_shifts = all_possible_shifts
+    for i in 0..(all_poss_shifts.length - 2) do
+      opt_ary_prev = all_poss_shifts[i]
+      opt_ary_next = all_poss_shifts[i+1]
+      all_poss_shifts[i+1] = filtered_shift_ary_fw(opt_ary_prev, opt_ary_next)
     end
-    all_possible_shifts
+    all_poss_shifts
   end
 
-  def filter_all_possible_shifts_bw(all_possible_shifts)
-    for i in 0..(all_possible_shifts.length - 2) do
-      prev_index = all_possible_shifts.length - 2 - i
-      opt_ary_prev = all_possible_shifts[prev_index]
-      opt_ary_next = all_possible_shifts[prev_index+1]
-      all_possible_shifts[prev_index] = filtered_shift_ary_bw(opt_ary_prev, opt_ary_next)
+  def filter_all_possible_shifts_bw(all_poss_shifts)
+    for i in 0..(all_poss_shifts.length - 2) do
+      prev_index = all_poss_shifts.length - 2 - i
+      opt_ary_prev = all_poss_shifts[prev_index]
+      opt_ary_next = all_poss_shifts[prev_index+1]
+      all_poss_shifts[prev_index] = filtered_shift_ary_bw(opt_ary_prev, opt_ary_next)
     end
-    all_possible_shifts
+    all_poss_shifts
   end
 end
