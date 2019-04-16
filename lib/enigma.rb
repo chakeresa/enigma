@@ -127,16 +127,39 @@ class Enigma
     end
   end
 
-  def filtered_shift_ary(first_shift_ary, next_shift_ary)
+  def valid_prev_shift?(possible_prev_shift, next_shift_ary)
+    next_shift_ary.any? do |next_shift_elem|
+      next_shift_elem.chars.first == possible_prev_shift.chars.last
+    end
+  end
+
+  def filtered_shift_ary_fw(first_shift_ary, next_shift_ary)
     next_shift_ary.find_all do |possible_next_shift|
       valid_next_shift?(possible_next_shift, first_shift_ary)
     end
   end
 
+  def filtered_shift_ary_bw(prev_shift_ary, next_shift_ary)
+    prev_shift_ary.find_all do |possible_prev_shift|
+      valid_prev_shift?(possible_prev_shift, next_shift_ary)
+    end
+  end
+
   def filter_all_possible_shifts_fw(all_possible_shifts)
-    all_possible_shifts.each_cons(2) do |opt_ary_prev, opt_ary_next|
-      index_of_next = all_possible_shifts.find_index(opt_ary_next)
-      all_possible_shifts[index_of_next] = filtered_shift_ary(opt_ary_prev, opt_ary_next)
+    for i in 0..(all_possible_shifts.length - 2) do
+      opt_ary_prev = all_possible_shifts[i]
+      opt_ary_next = all_possible_shifts[i+1]
+      all_possible_shifts[i+1] = filtered_shift_ary_fw(opt_ary_prev, opt_ary_next)
+    end
+    all_possible_shifts
+  end
+
+  def filter_all_possible_shifts_bw(all_possible_shifts)
+    for i in 0..(all_possible_shifts.length - 2) do
+      prev_index = all_possible_shifts.length - 2 - i
+      opt_ary_prev = all_possible_shifts[prev_index]
+      opt_ary_next = all_possible_shifts[prev_index+1]
+      all_possible_shifts[prev_index] = filtered_shift_ary_bw(opt_ary_prev, opt_ary_next)
     end
     all_possible_shifts
   end
