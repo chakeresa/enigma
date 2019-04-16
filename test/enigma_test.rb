@@ -26,7 +26,7 @@ class EnigmaTest < Minitest::Test
     assert_equal " stop", Enigma.new(" stop").end_of_msg
   end
 
-  def testinit_throws_error_if_end_of_msg_too_short
+  def test_init_throws_error_if_end_of_msg_too_short
     error_message = "Common end of message should be at least 4 characters long."
     err1 = assert_raises(RuntimeError) do
       Enigma.new("end")
