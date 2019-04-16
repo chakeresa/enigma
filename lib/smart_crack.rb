@@ -1,5 +1,6 @@
 module SmartCrack
   def smart_crack(ciphertext, date = todays_date)
+    # TO DO: break up with helper methods galore
     end_of_msg = " end"
     msg_length = ciphertext.length
     shift_count = ShiftGenerator::SHIFT_COUNT
@@ -22,7 +23,7 @@ module SmartCrack
         all_shifts << all_shifts.last + 27
       end
       all_shifts.map {|shift| (shift + 1000).to_s[-2..-1]}
-    end.rotate! # check if working right with different length msg
+    end.rotate! #TO DO: check if working right with different length msg
 
     all_possible_shifts = filter_all_possible_shifts_fw(all_possible_shifts)
     key_shifts = filter_all_possible_shifts_bw(all_possible_shifts)
