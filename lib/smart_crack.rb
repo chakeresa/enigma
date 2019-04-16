@@ -11,13 +11,15 @@ class SmartCrack
     @shift_count = ShiftGenerator::SHIFT_COUNT
   end
 
-  def setup
-    msg_length = @ciphertext.length
-    shift_count = @shift_count
-    # last_four_char_shift_indices = (0..(shift_count - 1)).to_a.rotate(msg_length % shift_count)
+  def last_four_chars
     date_shift_ary = DateShiftGenerator.new(@date).neg_shift_array
     date_shifted_msg = Enigma.new.translate(@ciphertext, date_shift_ary)
-    last_four_chars = date_shifted_msg[(-1 * shift_count)..-1]
+    date_shifted_msg[(-1 * @shift_count)..-1]
+  end
+
+  def setup
+    # msg_length = @ciphertext.length
+    # last_four_char_shift_indices = (0..(shift_count - 1)).to_a.rotate(msg_length % shift_count)
     min_possible_shifts = []
     last_four_chars.chars.each.with_index do |char, char_index|
       shift_guess = 0
