@@ -21,6 +21,16 @@ class SmartCrackTest < Minitest::Test
     assert_equal "bjhi", smart_crack_short.last_four_chars
   end
 
+  def test_last_four_chars_in_abcd_order
+    smart_crack_short = SmartCrack.new("rkbjhi", "291018")
+    assert_equal "bf f", smart_crack_short.last_four_chars_in_abcd_order
+  end
+
+  def test_min_possible_shifts_returns_ary_with_shifts_of_last_four_chars
+    smart_crack_short = SmartCrack.new("rkbjhi", "291018")
+    assert_equal [0, 26, 12, 25], smart_crack_short.min_possible_shifts
+  end
+
   def test_smart_crack_gets_message_out
     expected = {
       decryption: "hello world end",

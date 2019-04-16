@@ -17,11 +17,16 @@ class SmartCrack
     date_shifted_msg[(-1 * @shift_count)..-1]
   end
 
+  def last_four_chars_in_abcd_order
+    # TO DO: not being used but should be ...
+    msg_length = @ciphertext.length
+    last_four_chars.chars.rotate(msg_length % shift_count).join
+  end
+
   def min_possible_shifts
-    # msg_length = @ciphertext.length
-    # last_four_char_shift_indices = (0..(shift_count - 1)).to_a.rotate(msg_length % shift_count)
     min_poss_shifts = []
     last_four_chars.chars.each.with_index do |char, char_index|
+      # TO DO: ^ use last_four_chars_in_abcd_order
       shift_guess = 0
       while Shifter.shift_letter(char, -1 * shift_guess) != @end_of_msg[char_index]
         shift_guess += 1
