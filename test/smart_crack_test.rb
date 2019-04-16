@@ -21,17 +21,33 @@ class SmartCrackTest < Minitest::Test
     assert_equal "bjhi", smart_crack_short.last_four_chars
   end
 
-  def test_last_four_chars_in_abcd_order
+  def test_last_four_chars_returns_date_shifted_last_four_characters_other
+    smart_crack_short = SmartCrack.new("rkbjk", "291018")
+    assert_equal "h fe", smart_crack_short.last_four_chars
+  end
+
+  def test_abcd_index_of_last_four_chars_returns_zero_thru_three
     smart_crack_short = SmartCrack.new("rkbjhi", "291018")
-    assert_equal "bf f", smart_crack_short.last_four_chars_in_abcd_order
+    assert_equal [2, 3, 0, 1], smart_crack_short.abcd_index_of_last_four_chars
+  end
+
+  def test_abcd_index_of_last_four_chars_returns_zero_thru_three_other
+    smart_crack_short = SmartCrack.new("rkbjk", "291018")
+    assert_equal [1, 2, 3, 0], smart_crack_short.abcd_index_of_last_four_chars
   end
 
   def test_min_possible_shifts_returns_ary_with_shifts_of_last_four_chars
     smart_crack_short = SmartCrack.new("rkbjhi", "291018")
-    assert_equal [0, 26, 12, 25], smart_crack_short.min_possible_shifts
+    assert_equal [15, 2, 0, 1], smart_crack_short.min_possible_shifts
+  end
+
+  def test_min_possible_shifts_returns_ary_with_shifts_of_last_four_chars_other
+    smart_crack_short = SmartCrack.new("rkbjk", "291018")
+    assert_equal [1, 8, 22, 19], smart_crack_short.min_possible_shifts
   end
 
   def test_smart_crack_gets_message_out
+    skip
     expected = {
       decryption: "hello world end",
       key: "08304",
