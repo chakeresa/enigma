@@ -22,18 +22,22 @@ class SmartCrack
     (0..(@shift_count - 1)).to_a.rotate(msg_length % @shift_count)
   end
 
-  # TO DO: refactor
   def min_possible_shifts
     min_poss_shifts = []
     last_four_chars.chars.each.with_index do |char, char_index|
-      shift_guess = 0
-      letter_wanted = @end_of_msg[char_index]
-      while Shifter.shift_letter(char, -1 * shift_guess) != letter_wanted
-        shift_guess += 1
-      end
-      min_poss_shifts[abcd_index_of_last_four_chars[char_index]] = shift_guess
+      shift = find_single_shift(char, char_index)
+      min_poss_shifts[abcd_index_of_last_four_chars[char_index]] = shift
     end
     min_poss_shifts
+  end
+
+  def find_single_shift(char, char_index)
+    shift_guess = 0
+    letter_wanted = @end_of_msg[char_index]
+    while Shifter.shift_letter(char, -1 * shift_guess) != letter_wanted
+      shift_guess += 1
+    end
+    shift_guess
   end
 
   def smart_crack
