@@ -37,24 +37,23 @@ class SmartCrack
     shift_guess
   end
 
-  def smart_crack
-    # TO DO: break up with helper methods galore
-    all_possible_shifts = min_possible_shifts.map do |possible_shift|
+  def all_possible_shifts
+    min_possible_shifts.map do |possible_shift|
       all_shifts = [possible_shift]
       while all_shifts.last + 27 < 100
         all_shifts << all_shifts.last + 27
       end
       all_shifts.map {|shift| (shift + 1000).to_s[-2..-1]}
-    end.rotate! #TO DO: check if working right with different length msg
+    end #TO DO: check if working right with different length msg
+  end
 
-    all_possible_shifts = filter_all_possible_shifts_fw(all_possible_shifts)
-    key_shifts = filter_all_possible_shifts_bw(all_possible_shifts)
-
+  def smart_crack
+    all_poss_shifts = filter_all_possible_shifts_fw(all_possible_shifts)
+    key_shifts = filter_all_possible_shifts_bw(all_poss_shifts)
     key = ""
     key_shifts.flatten.each.with_index do |shift, index|
       index == 0 ? key << shift : key << shift.chars.last
     end
-
     Enigma.new.decrypt(@ciphertext, key, @date)
   end
 

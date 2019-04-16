@@ -46,8 +46,17 @@ class SmartCrackTest < Minitest::Test
     assert_equal [1, 8, 22, 19], smart_crack_short.min_possible_shifts
   end
 
+  def test_all_possible_shifts_returns_ary_w_options_for_shifts_of_last_four_chars
+    assert_equal [["08", "35", "62", "89"], ["02", "29", "56", "83"], ["03", "30", "57", "84"], ["04", "31", "58", "85"]], @smart_crack_default.all_possible_shifts
+  end
+
+  def test_all_possible_shifts_returns_ary_w_options_for_shifts_of_last_four_chars_other
+    smart_crack_short = SmartCrack.new("rkbjhi", "291018")
+    assert_equal [["15", "42", "69", "96"], ["02", "29", "56", "83"], ["00", "27", "54", "81"], ["01", "28", "55", "82"]], smart_crack_short.all_possible_shifts
+  end
+
   def test_smart_crack_gets_message_out
-    skip
+    # skip
     expected = {
       decryption: "hello world end",
       key: "08304",
