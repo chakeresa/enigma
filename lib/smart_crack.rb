@@ -1,8 +1,5 @@
 class SmartCrack
-  attr_reader :ciphertext,
-              :date,
-              :end_of_msg,
-              :shift_count
+  attr_reader :ciphertext, :date, :end_of_msg, :shift_count
 
   def initialize(ciphertext, date, end_of_msg = " end")
     @ciphertext = ciphertext
@@ -55,11 +52,7 @@ class SmartCrack
 
     key = ""
     key_shifts.flatten.each.with_index do |shift, index|
-      if index == 0
-        key << shift
-      else
-        key << shift.chars.last
-      end
+      index == 0 ? key << shift : key << shift.chars.last
     end
 
     Enigma.new.decrypt(@ciphertext, key, @date)
