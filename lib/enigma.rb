@@ -123,6 +123,12 @@ class Enigma
     end
   end
 
+  def filtered_shift_ary(first_shift_ary, next_shift_ary)
+    next_shift_ary.find_all do |possible_next_shift|
+      valid_next_shift?(possible_next_shift, first_shift_ary)
+    end
+  end
+
   def key_length
     KeyShiftGenerator.new(0).key_length
   end

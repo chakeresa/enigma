@@ -127,6 +127,12 @@ class EnigmaTest < Minitest::Test
     assert_equal false, @enigma.valid_next_shift?(impossible_next_shift, first_shift_ary)
   end
 
+  def test_filtered_shift_ary_returns_only_shifts_which_match_prev_ary_last_digit
+    first_shift_ary = ["08", "35", "62", "89"]
+    next_shift_ary = ["02", "29", "56", "83"]
+    assert_equal ["29", "56", "83"], @enigma.filtered_shift_ary(first_shift_ary, next_shift_ary)
+  end
+
   def test_crack_gets_message_out_without_date
     encrypted = @enigma.encrypt("hello world end", "08304")
     expected = {
