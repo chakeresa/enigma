@@ -1,6 +1,5 @@
 module SmartCrack
-  def smart_crack(ciphertext, date = todays_date)
-    # TO DO: break up with helper methods galore
+  def setup(ciphertext, date)
     msg_length = ciphertext.length
     shift_count = @shift_count
     # last_four_char_shift_indices = (0..(shift_count - 1)).to_a.rotate(msg_length % shift_count)
@@ -15,7 +14,12 @@ module SmartCrack
       end
       min_possible_shifts[char_index] = shift_guess
     end
+    min_possible_shifts
+  end
 
+  def smart_crack(ciphertext, date = todays_date)
+    # TO DO: break up with helper methods galore
+    min_possible_shifts = setup(ciphertext, date)
     all_possible_shifts = min_possible_shifts.map do |possible_shift|
       all_shifts = [possible_shift]
       while all_shifts.last + 27 < 100
