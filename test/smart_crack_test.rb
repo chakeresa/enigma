@@ -56,7 +56,6 @@ class SmartCrackTest < Minitest::Test
   end
 
   def test_smart_crack_gets_message_out
-    # skip
     expected = {
       decryption: "hello world end",
       key: "08304",
@@ -64,6 +63,18 @@ class SmartCrackTest < Minitest::Test
     }
 
     assert_equal expected, @smart_crack_default.smart_crack
+  end
+
+
+  def test_smart_crack_throws_error_if_no_key_works
+    encrypted = Enigma.new.encrypt("no ending for you", "08304", "291018")
+    smart_crack_fail = SmartCrack.new(encrypted[:encryption], "291018")
+
+    error_message = "Message cannot be cracked with standard key."
+    err1 = assert_raises(RuntimeError) do
+      smart_crack_fail.smart_crack
+    end
+    assert_equal error_message, err1.message
   end
 
   def test_filter_all_possible_shifts_fw

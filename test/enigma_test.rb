@@ -132,24 +132,4 @@ class EnigmaTest < Minitest::Test
 
     assert_equal expected, @enigma.crack(encrypted[:encryption])
   end
-
-  def test_crack_throws_error_if_no_key_works
-    encrypted = @enigma.encrypt("no ending for you", "08304", "291018")
-
-    error_message = "Message cannot be cracked."
-    err1 = assert_raises(RuntimeError) do
-      @enigma.crack(encrypted[:encryption], "291018")
-    end
-    assert_equal error_message, err1.message
-  end
-
-  def test_smart_crack_gets_message_out
-    expected = {
-      decryption: "hello world end",
-      key: "08304",
-      date: "291018"
-    }
-
-    assert_equal expected, @enigma.smart_crack("vjqtbeaweqihssi", "291018")
-  end
 end

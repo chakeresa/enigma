@@ -50,6 +50,7 @@ class SmartCrack
   def smart_crack
     all_poss_shifts = filter_all_possible_shifts_fw(all_possible_shifts)
     key_shifts = filter_all_possible_shifts_bw(all_poss_shifts)
+    raise "Message cannot be cracked with standard key." if key_shifts[0] == []
     key = ""
     key_shifts.flatten.each.with_index do |shift, index|
       index == 0 ? key << shift : key << shift.chars.last
