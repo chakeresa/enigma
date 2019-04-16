@@ -17,23 +17,22 @@ class SmartCrack
     date_shifted_msg[(-1 * @shift_count)..-1]
   end
 
-  def setup
+  def min_possible_shifts
     # msg_length = @ciphertext.length
     # last_four_char_shift_indices = (0..(shift_count - 1)).to_a.rotate(msg_length % shift_count)
-    min_possible_shifts = []
+    min_poss_shifts = []
     last_four_chars.chars.each.with_index do |char, char_index|
       shift_guess = 0
       while Shifter.shift_letter(char, -1 * shift_guess) != @end_of_msg[char_index]
         shift_guess += 1
       end
-      min_possible_shifts[char_index] = shift_guess
+      min_poss_shifts[char_index] = shift_guess
     end
-    min_possible_shifts
+    min_poss_shifts
   end
 
   def smart_crack
     # TO DO: break up with helper methods galore
-    min_possible_shifts = setup
     all_possible_shifts = min_possible_shifts.map do |possible_shift|
       all_shifts = [possible_shift]
       while all_shifts.last + 27 < 100
