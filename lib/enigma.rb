@@ -2,10 +2,22 @@ require 'date'
 require_relative 'shifter'
 require_relative 'key_shift_generator'
 require_relative 'date_shift_generator'
+require_relative 'smart_crack'
 
 class Enigma
+  attr_reader :end_of_msg,
+              :shift_count
+
+  def initialize(end_of_msg = " end")
+    @end_of_msg = end_of_msg.downcase
+    @shift_count = ShiftGenerator::SHIFT_COUNT
+    if @end_of_msg.length < @shift_count
+      raise "Common end of message should be at least #{@shift_count} characters long."
+    end
+  end
+
   def random_key
-    max_number = "9" * (ShiftGenerator::SHIFT_COUNT + 1)
+    max_number = "9" * (@shift_count + 1)
     random_number_string = rand(max_number.to_i).to_s
     format = KeyShiftGenerator.new(0).format
     (format % random_number_string).gsub(" ", "0")
@@ -18,7 +30,7 @@ class Enigma
   def translate(message, shift_ary)
     translation = ""
     message.each_char.with_index do |char, index_of_char|
-      abcd_index = index_of_char % ShiftGenerator::SHIFT_COUNT
+      abcd_index = index_of_char % @shift_count
       translation << Shifter.shift_letter(char, shift_ary[abcd_index])
     end
     translation
@@ -43,14 +55,7 @@ class Enigma
   end
 
   def crack(ciphertext, date = todays_date)
-    key_guess = 0
-    decrypted = decrypt(ciphertext, key_guess, date)[:decryption]
-    while decrypted[-4..-1] != " end"
-      decrypted = decrypt(ciphertext, key_guess, date)[:decryption]
-      key_guess += 1
-      raise "Message cannot be cracked." if key_guess == 10 ** key_length
-    end
-    decrypt(ciphertext, key_guess - 1, date)
+    SmartCrack.new(ciphertext, date, @end_of_msg).smart_crack
   end
 
   def key_length

@@ -17,6 +17,23 @@ class EnigmaTest < Minitest::Test
     assert_equal 5, @enigma.key_length
   end
 
+  def test_it_inits_with_default_end_of_msg_and_shift_count
+    assert_equal " end", @enigma.end_of_msg
+    assert_equal 4, @enigma.shift_count
+  end
+
+  def test_it_can_have_other_end_of_msg
+    assert_equal " stop", Enigma.new(" stop").end_of_msg
+  end
+
+  def test_init_throws_error_if_end_of_msg_too_short
+    error_message = "Common end of message should be at least 4 characters long."
+    err1 = assert_raises(RuntimeError) do
+      Enigma.new("end")
+    end
+    assert_equal error_message, err1.message
+  end
+
   def test_generate_random_key_returns_a_5_digit_string_with_leading_zeroes
     lots_of_random_keys = []
     10000.times {lots_of_random_keys << @enigma.random_key}
@@ -114,15 +131,5 @@ class EnigmaTest < Minitest::Test
     }
 
     assert_equal expected, @enigma.crack(encrypted[:encryption])
-  end
-
-  def test_crack_throws_error_if_no_key_works
-    encrypted = @enigma.encrypt("no ending for you", "08304", "291018")
-
-    error_message = "Message cannot be cracked."
-    err1 = assert_raises(RuntimeError) do
-      @enigma.crack(encrypted[:encryption], "291018")
-    end
-    assert_equal error_message, err1.message
   end
 end
