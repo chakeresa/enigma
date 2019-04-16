@@ -115,9 +115,10 @@ class EnigmaTest < Minitest::Test
     assert_equal expected, @enigma.smart_crack("vjqtbeaweqihssi", "291018")
   end
 
-  # def test_filter_all_possible_shifts
-  #   all_possible_shifts = [["08", "35", "62", "89"], ["02", "29", "56", "83"], ["03", "30", "57", "84"], ["04", "31", "58", "85"]]
-  # end
+  def test_filter_all_possible_shifts_fw
+    all_possible_shifts = [["08", "35", "62", "89"], ["02", "29", "56", "83"], ["03", "30", "57", "84"], ["04", "31", "58", "85"]]
+    assert_equal [["08", "35", "62", "89"], ["29", "56", "83"], ["30"], ["04", "31"]], @enigma.filter_all_possible_shifts_fw(all_possible_shifts)
+  end
 
   def test_valid_next_shift_returns_true_if_valid_consecutive_shifts
     first_shift_ary = ["08", "35", "62", "89"]

@@ -78,6 +78,10 @@ class Enigma
       all_shifts.map {|shift| (shift + 1000).to_s[-2..-1]}
     end.rotate! # check if working right with different length msg
 
+    # all_possible_shifts = filter_all_possible_shifts_fw(all_possible_shifts)
+    #
+    # require "pry"; binding.pry
+
     # refactor all below
 
     filtered_options = []
@@ -127,6 +131,14 @@ class Enigma
     next_shift_ary.find_all do |possible_next_shift|
       valid_next_shift?(possible_next_shift, first_shift_ary)
     end
+  end
+
+  def filter_all_possible_shifts_fw(all_possible_shifts)
+    all_possible_shifts.each_cons(2) do |opt_ary_prev, opt_ary_next|
+      index_of_next = all_possible_shifts.find_index(opt_ary_next)
+      all_possible_shifts[index_of_next] = filtered_shift_ary(opt_ary_prev, opt_ary_next)
+    end
+    all_possible_shifts
   end
 
   def key_length
