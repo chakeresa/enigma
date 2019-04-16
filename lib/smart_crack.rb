@@ -1,10 +1,22 @@
-module SmartCrack
-  def setup(ciphertext, date)
-    msg_length = ciphertext.length
+class SmartCrack
+  attr_reader :ciphertext,
+              :date,
+              :end_of_msg,
+              :shift_count
+
+  def initialize(ciphertext, date, end_of_msg = " end")
+    @ciphertext = ciphertext
+    @date = date
+    @end_of_msg = end_of_msg.downcase
+    @shift_count = ShiftGenerator::SHIFT_COUNT
+  end
+
+  def setup
+    msg_length = @ciphertext.length
     shift_count = @shift_count
     # last_four_char_shift_indices = (0..(shift_count - 1)).to_a.rotate(msg_length % shift_count)
-    date_shift_ary = DateShiftGenerator.new(date).neg_shift_array
-    date_shifted_msg = translate(ciphertext, date_shift_ary)
+    date_shift_ary = DateShiftGenerator.new(@date).neg_shift_array
+    date_shifted_msg = Enigma.new.translate(@ciphertext, date_shift_ary)
     last_four_chars = date_shifted_msg[(-1 * shift_count)..-1]
     min_possible_shifts = []
     last_four_chars.chars.each.with_index do |char, char_index|
@@ -17,9 +29,9 @@ module SmartCrack
     min_possible_shifts
   end
 
-  def smart_crack(ciphertext, date = todays_date)
+  def smart_crack
     # TO DO: break up with helper methods galore
-    min_possible_shifts = setup(ciphertext, date)
+    min_possible_shifts = setup
     all_possible_shifts = min_possible_shifts.map do |possible_shift|
       all_shifts = [possible_shift]
       while all_shifts.last + 27 < 100
@@ -40,7 +52,7 @@ module SmartCrack
       end
     end
 
-    decrypt(ciphertext, key, date)
+    Enigma.new.decrypt(@ciphertext, key, @date)
   end
 
   def valid_next_shift?(possible_next_shift, first_shift_ary)

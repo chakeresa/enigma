@@ -5,8 +5,6 @@ require_relative 'date_shift_generator'
 require_relative 'smart_crack'
 
 class Enigma
-  include SmartCrack
-
   attr_reader :end_of_msg,
               :shift_count
 
@@ -65,6 +63,10 @@ class Enigma
       raise "Message cannot be cracked." if key_guess == 10 ** key_length
     end
     decrypt(ciphertext, key_guess - 1, date)
+  end
+
+  def smart_crack(ciphertext, date = todays_date)
+    SmartCrack.new(ciphertext, date, @end_of_msg).smart_crack
   end
 
   def key_length
