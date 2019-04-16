@@ -76,7 +76,9 @@ class Enigma
         all_shifts << all_shifts.last + 27
       end
       all_shifts.map {|shift| (shift + 1000).to_s[-2..-1]}
-    end.rotate!
+    end.rotate! # check if working right with different length msg
+
+    # refactor all below
 
     filtered_options = []
     all_possible_shifts.each_cons(2) do |opt_ary_1, opt_ary_2|
@@ -103,7 +105,7 @@ class Enigma
     key_shifts[0] = all_possible_shifts[0].find_all do |shift0|
       shift0.chars.last == key_shifts[1][0].chars.first && filtered_options[0].include?(shift0.chars.last)
     end
-    
+
     key = ""
     key_shifts.flatten.each.with_index do |shift, index|
       if index == 0
@@ -113,6 +115,12 @@ class Enigma
       end
     end
     decrypt(ciphertext, key, date)
+  end
+
+  def valid_next_shift?(possible_next_shift, first_shift_ary)
+    first_shift_ary.any? do |first_shift_elem|
+      first_shift_elem.chars.last == possible_next_shift.chars.first
+    end
   end
 
   def key_length
@@ -125,7 +133,3 @@ class Enigma
     {key: formatted_key, date: formatted_date}
   end
 end
-
-Enigma.new.smart_crack("vjqtbeaweqihssi", "291018")
-# key is actually 08304 -- shifts = [08, 83, 30, 04]
-# all_possible_shifts = [[**8**, 35, 62, 89], [2, 29, 56, **83**], [3, **30**, 57, 84], [**4**, 31, 58, 85], ]
