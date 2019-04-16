@@ -7,8 +7,11 @@ require_relative 'smart_crack'
 class Enigma
   include SmartCrack
 
-  def initialize
-    @end_of_msg = " end"
+  attr_reader :end_of_msg,
+              :shift_count
+
+  def initialize(end_of_msg = " end")
+    @end_of_msg = end_of_msg.downcase
     @shift_count = ShiftGenerator::SHIFT_COUNT
     if @end_of_msg.length < @shift_count
       raise "Common end of message should be at least #{@shift_count} characters long."
