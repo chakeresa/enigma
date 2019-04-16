@@ -65,6 +65,20 @@ class SmartCrackTest < Minitest::Test
     assert_equal expected, @smart_crack_default.smart_crack
   end
 
+  def test_smart_crack_gets_message_out_in_case_of_multiple_possible_keys
+    encryption = Enigma.new.encrypt("hello world end", "46903", "291018")[:encryption]
+
+    smart_crack_double = SmartCrack.new(encryption, "291018")
+
+    expected = {
+      decryption: "hello world end",
+      key: "19630",
+      date: "291018"
+    }
+
+    assert_equal expected, smart_crack_double.smart_crack
+  end
+
 
   def test_smart_crack_throws_error_if_no_key_works
     encrypted = Enigma.new.encrypt("no ending for you", "08304", "291018")

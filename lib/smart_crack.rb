@@ -47,20 +47,29 @@ class SmartCrack
     end
   end
 
-  def smart_crack
+  def find_shifts
     all_poss_shifts = filter_all_possible_shifts_fw(all_possible_shifts)
     key_shifts = filter_all_possible_shifts_bw(all_poss_shifts)
     raise "Message cannot be cracked with standard key." if key_shifts[0] == []
-    if key_shifts[0].count > 1
-      key_shifts[0] = [key_shifts[0][0]]
-      key_shifts = filter_all_possible_shifts_fw(key_shifts)
-      key_shifts = filter_all_possible_shifts_bw(key_shifts)
-    end
+    deal_with_multiple_possible_keys(key_shifts)
+  end
+
+  def smart_crack
+    key_shifts = find_shifts
     key = ""
     key_shifts.flatten.each.with_index do |shift, index|
       index == 0 ? key << shift : key << shift.chars.last
     end
     Enigma.new.decrypt(@ciphertext, key, @date)
+  end
+
+  def deal_with_multiple_possible_keys(key_shifts)
+    if key_shifts[0].count > 1
+      key_shifts[0] = [key_shifts[0][0]]
+      key_shifts = filter_all_possible_shifts_fw(key_shifts)
+      key_shifts = filter_all_possible_shifts_bw(key_shifts)
+    end
+    key_shifts
   end
 
   def valid_next_shift?(possible_next_shift, first_shift_ary)
