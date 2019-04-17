@@ -8,7 +8,7 @@ class Enigma
   attr_reader :end_of_msg,
               :shift_count
 
-  def initialize(end_of_msg = " end")
+  def initialize(end_of_msg = " stop")
     @end_of_msg = end_of_msg.downcase
     @shift_count = ShiftGenerator::SHIFT_COUNT
     if @end_of_msg.length < @shift_count
